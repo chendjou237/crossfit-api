@@ -11,9 +11,40 @@ const createNewWorkouts = (newWorkout) => {
   if(isAlreadyAdded){
     return;
   }
-  const newDB = DB.workouts.push(newWorkout);
-  saveToDatabase(newDB);
+   DB.workouts.push(newWorkout);
+  saveToDatabase(DB);
   return newWorkout;
 }
 
-module.exports = { getAllWorkouts, createNewWorkouts };
+const getOneWorkout = (workoutId) => {
+  const workout = DB.workouts.find((workout) => workout.id === workoutId)
+  if (!workout){
+    return;
+  }
+  return workout;
+}
+
+const updateOneWorkout = (workoutId, body) => {
+  const indexOfUpdate = DB.workouts.findIndex((workout) => workout.id === workoutId)
+  if(indexOfUpdate === -1){
+    return ;
+  }
+  const updatedWorkout = {
+    ...DB.workouts[indexOfUpdate],
+    changes
+  }
+  DB.workouts[indexOfUpdate] = updatedWorkout;
+  saveToDatabase(DB);
+  return updatedWorkout;
+}
+
+const deleteOneWorkout = (workoutId) => {
+  const exist = DB.workouts.findIndex((workout) => workout.id === workoutId)
+  if(exist === -1){
+    return;
+  }
+  DB.workouts.splice(indexForDeletion, 1);
+  saveToDatabase(DB)
+
+}
+module.exports = { getAllWorkouts, createNewWorkouts, deleteOneWorkout, updateOneWorkout, getOneWorkout };

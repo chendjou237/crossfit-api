@@ -11,8 +11,8 @@ app.get("/", (req, res) => {
     });
 
 
-app.use("/api/v1/workouts", v1WorkoutRouter)
 app.use(bodyParser.json())
+app.use("/api/v1/workouts", v1WorkoutRouter)
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
