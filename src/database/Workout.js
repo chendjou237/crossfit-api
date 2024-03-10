@@ -9,17 +9,30 @@ const getAllWorkouts = () => {
 const createNewWorkouts = (newWorkout) => {
   const isAlreadyAdded = DB.workouts.findIndex((workout) => workout.name == newWorkout.name) > -1;
   if(isAlreadyAdded){
-    return;
+    throw {
+        status: 400,
+        message: `the workout with name ${newWorkout.name} already exist`
+    }
   }
-   DB.workouts.push(newWorkout);
-  saveToDatabase(DB);
-  return newWorkout;
+   try {
+    DB.workouts.push(newWorkout);
+   saveToDatabase(DB);
+   return newWorkout;
+   } catch (error) {
+    throw {
+        status: error.status || 500,
+        message: error.message || error
+    }
+   }
 }
 
 const getOneWorkout = (workoutId) => {
   const workout = DB.workouts.find((workout) => workout.id === workoutId)
   if (!workout){
-    return;
+    throw {
+        status: 400,
+        message: "workout don't exist"
+    }
   }
   return workout;
 }
@@ -27,24 +40,44 @@ const getOneWorkout = (workoutId) => {
 const updateOneWorkout = (workoutId, body) => {
   const indexOfUpdate = DB.workouts.findIndex((workout) => workout.id === workoutId)
   if(indexOfUpdate === -1){
-    return ;
+    throw {
+        status: 400,
+        message: "workout don't exist",
+    }
   }
   const updatedWorkout = {
     ...DB.workouts[indexOfUpdate],
     changes
   }
-  DB.workouts[indexOfUpdate] = updatedWorkout;
-  saveToDatabase(DB);
-  return updatedWorkout;
+ try {
+     DB.workouts[indexOfUpdate] = updatedWorkout;
+     saveToDatabase(DB);
+     return updatedWorkout;
+ } catch (error) {
+    throw {
+        status: error?.status || 500,
+        message: error?.message || error,
+    }
+ }
 }
 
 const deleteOneWorkout = (workoutId) => {
   const exist = DB.workouts.findIndex((workout) => workout.id === workoutId)
   if(exist === -1){
-    return;
+    throw {
+        status: 400,
+        message: "workout don't exist",
+    }
+  }try {
+    
+    DB.workouts.splice(indexForDeletion, 1);
+    saveToDatabase(DB)
+  
+  } catch (error) {
+    throw {
+        status: error?.status || 500,
+        message: error?.message || error,
+    }
   }
-  DB.workouts.splice(indexForDeletion, 1);
-  saveToDatabase(DB)
-
 }
 module.exports = { getAllWorkouts, createNewWorkouts, deleteOneWorkout, updateOneWorkout, getOneWorkout };
