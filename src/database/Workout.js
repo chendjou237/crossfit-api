@@ -8,8 +8,35 @@ const getAllWorkouts = (filter) => {
   let workouts = DB.workouts;
  try {
    if(filter.mode){
-     return DB.workouts.filter((workout) => workout.mode.toLowerCase().includes(filter.mode))
+     workouts = workouts.filter((workout) => workout.mode.toLowerCase().includes(filter.mode))
    }
+
+   if(filter.equipment){
+      workouts = workouts.filter((workout) => workout.equipment.includes(filter.equipment))
+   }
+
+   if(filter.page ){
+    console.log(filter.page);
+      const start = (filter.page - 1) * (filter.limit || 5);
+      const end = filter.page * ( filter.limit|| 5);
+      workouts = workouts.slice(start, end);
+    }
+    if(filter.sort){
+      workouts = workouts.sort((a, b) => {
+      if (filter.sort === "createdAt") {
+          if(filter.sort[0] === "-"){
+            return b.createdAt - a.createdAt
+          }
+          return a.createdAt - b.createdAt
+      }
+      if (filter.sort === "updatedAt") {
+          if(filter.sort[0] === "-"){
+            return b.updatedAt - a.updatedAt
+          }
+          return a.updatedAt - b.updatedAt  
+      }
+    })
+    }
  
    return workouts
  } catch (error) {

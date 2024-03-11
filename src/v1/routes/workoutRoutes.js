@@ -23,6 +23,21 @@ const {
  *         schema:
  *           type: string
  *         description: The mode of a workout
+ *       - in: query
+ *         name: equipment
+ *         schema:
+ *           type: array
+ *         description: The equipment of a workout
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *         description: The page of the list of workout
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *         description: The limit of the list of workout
  *     responses:
  *       200:
  *         description: OK
