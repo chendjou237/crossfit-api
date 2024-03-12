@@ -25,9 +25,9 @@ const getAllWorkouts = (filter) => {
       workouts = workouts.sort((a, b) => {
       if (filter.sort === "createdAt") {
           if(filter.sort[0] === "-"){
-            return b.createdAt - a.createdAt
+            return new Date(b.createdAt) - new Date(a.createdAt)
           }
-          return a.createdAt - b.createdAt
+          return new Date(a.createdAt) - new Date(b.createdAt)
       }
       if (filter.sort === "updatedAt") {
           if(filter.sort[0] === "-"){

@@ -10,6 +10,7 @@ const cache = apicache.middleware
 
 const v1WorkoutRouter = require("./v1/routes/workoutRoutes");
 const v1MemberRouter = require("./v1/routes/memberRoutes")
+const v1UserRouter = require("./v1/routes/userRoutes")
 
 app.get("/", (req, res) => {
     res.send("Hello World");    
@@ -17,9 +18,10 @@ app.get("/", (req, res) => {
 
 
 app.use(bodyParser.json())
-app.use(cache("2 minutes"))
+//app.use(cache("2 minutes"))
 app.use("/api/v1/workouts", v1WorkoutRouter)
 app.use("/api/v1/members", v1MemberRouter)
+app.use("/api/v1/users", v1UserRouter)
 
 
 app.listen(PORT, () => {
