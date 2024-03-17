@@ -3,6 +3,8 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const {v4:uuid} = require("uuid")
 
+require('dotenv').config();
+
 
 const getAllUsers = (filter) => {
     try {
@@ -12,6 +14,7 @@ const getAllUsers = (filter) => {
         throw error;
     }
     };
+
 
 const getOneUser = (userId) => {
     try {
@@ -45,7 +48,8 @@ try {
             message: "Please enter the corresponding password",
         }
     }
-    const token = jwt.sign({userId: user.id}, 'your-secret-key', {
+    const secret = process.env.JWT_SECRET;
+    const token = jwt.sign({userId: user.id}, secret, {
         expiresIn: '1h'
     })
     return token
